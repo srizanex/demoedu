@@ -14,10 +14,10 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Google Fonts -->
+    <!-- Google Fonts (Added Indie Flower for Handwriting) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Indie+Flower&display=swap" rel="stylesheet">
     
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -29,6 +29,7 @@
                     fontFamily: {
                         sans: ['"Plus Jakarta Sans"', 'sans-serif'],
                         heading: ['"Outfit"', 'sans-serif'],
+                        handwriting: ['"Indie Flower"', 'cursive'], // Custom handwriting font
                     },
                     colors: {
                         brand: {
@@ -51,6 +52,8 @@
                         'toss': 'toss 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards',
                         'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
                         'loader': 'loader 2.5s ease-in-out infinite',
+                        'paper-slide-out': 'paperSlideOut 0.8s ease-in forwards',
+                        'paper-scale-up': 'paperScaleUp 0.8s ease-out forwards',
                     },
                     keyframes: {
                         float: {
@@ -70,6 +73,14 @@
                             '0%': { transform: 'translateX(-100%)' },
                             '50%': { transform: 'translateX(0%)' },
                             '100%': { transform: 'translateX(100%)' }
+                        },
+                        paperSlideOut: {
+                            '0%': { transform: 'translateX(0) rotate(-3deg)', opacity: '1' },
+                            '100%': { transform: 'translateX(120%) rotate(15deg)', opacity: '0' }
+                        },
+                        paperScaleUp: {
+                            '0%': { transform: 'scale(0.9) rotate(3deg)', opacity: '0.6' },
+                            '100%': { transform: 'scale(1) rotate(-3deg)', opacity: '1' }
                         }
                     }
                 }
@@ -85,6 +96,8 @@
             -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.3);
         }
+        
+        /* ... existing styles ... */
 
         .glass-card {
             background: rgba(255, 255, 255, 0.7);
@@ -145,6 +158,7 @@
 
     <!-- Splash Screen -->
     <div id="splash-screen" class="fixed inset-0 z-[100] bg-slate-900 flex flex-col items-center justify-center transition-transform duration-1000 cubic-bezier(0.7, 0, 0.2, 1)">
+        <!-- ... existing splash content ... -->
         <div class="relative mb-8">
             <div class="absolute inset-0 bg-brand-500 rounded-2xl blur-xl opacity-20 animate-pulse"></div>
             <div id="splash-icon" class="relative w-24 h-24 bg-gradient-to-br from-brand-500 to-brand-700 rounded-2xl flex items-center justify-center text-white shadow-2xl z-10 scale-0 animate-[fadeInUp_0.5s_ease-out_forwards]">
@@ -171,6 +185,7 @@
 
     <!-- Navigation (Top - Desktop Only for Links, Logo for All) -->
     <nav class="fixed w-full z-50 glass-nav transition-all duration-300" id="navbar">
+        <!-- ... existing navbar content ... -->
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-center md:justify-between items-center h-16 md:h-20">
                 <!-- Logo -->
@@ -205,6 +220,7 @@
     
     <!-- Mobile Bottom Navigation (App Style) -->
     <div class="md:hidden fixed bottom-0 left-0 w-full bg-white/95 backdrop-blur-xl border-t border-slate-200 z-50 pb-safe shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+        <!-- ... existing bottom nav ... -->
         <div class="flex justify-around items-center h-16">
             <a href="#home" class="nav-item flex flex-col items-center justify-center w-full h-full text-brand-600 active-nav">
                 <i data-lucide="home" class="w-6 h-6 mb-0.5"></i>
@@ -287,24 +303,55 @@
                     <div class="relative w-full max-w-lg aspect-square scale-90 md:scale-100">
                         <div class="absolute inset-0 bg-gradient-to-tr from-brand-100 to-white rounded-[3rem] rotate-3 transform shadow-2xl border border-white/50"></div>
                         <div class="absolute inset-0 bg-white rounded-[3rem] -rotate-3 transform shadow-xl overflow-hidden flex items-center justify-center border border-slate-100">
-                             <!-- Simple SVG illustration -->
-                             <svg class="w-full h-full text-slate-100" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="200" cy="200" r="150" fill="currentColor" opacity="0.5"/>
-                                <path d="M100 200 Q200 50 300 200 T100 200" fill="none" stroke="#e2e8f0" stroke-width="2"/>
-                             </svg>
+                             
+                             <!-- Test Paper Stack Container -->
+                             <div id="paper-stack" class="relative w-52 md:w-64 aspect-[1/1.4]">
+                                 
+                                 <!-- Card 2 (Back/Next) -->
+                                 <div id="paper-back" class="absolute inset-0 bg-white border border-slate-200 shadow-sm rounded-lg p-5 flex flex-col gap-3 rotate-3 scale-90 opacity-60 z-0 transition-all duration-500 overflow-hidden">
+                                    <div class="flex justify-between items-center border-b border-slate-100 pb-2 mb-1">
+                                        <div class="w-16 h-2 bg-slate-200 rounded-full"></div>
+                                        <div class="w-8 h-2 bg-slate-100 rounded-full"></div>
+                                    </div>
+                                    <div id="back-content" class="font-handwriting text-slate-800 text-sm md:text-base space-y-3 leading-snug">
+                                        <!-- Dynamic Content Here -->
+                                    </div>
+                                    <div class="absolute bottom-6 right-4 w-14 h-14 md:w-16 md:h-16 rounded-full border-4 border-red-500/80 flex items-center justify-center rotate-[-15deg] bg-red-50/50 backdrop-blur-sm">
+                                        <span class="font-heading font-black text-2xl md:text-3xl text-red-500">A+</span>
+                                    </div>
+                                 </div>
+
+                                 <!-- Card 1 (Front/Current) -->
+                                 <div id="paper-front" class="absolute inset-0 bg-white border border-slate-200 shadow-sm rounded-lg p-5 flex flex-col gap-3 -rotate-3 z-10 overflow-hidden">
+                                    <div class="flex justify-between items-center border-b border-slate-100 pb-2 mb-1">
+                                        <div class="w-16 h-2 bg-slate-200 rounded-full"></div>
+                                        <div class="w-8 h-2 bg-slate-100 rounded-full"></div>
+                                    </div>
+                                    <div id="front-content" class="font-handwriting text-slate-800 text-sm md:text-base space-y-3 leading-snug">
+                                        <!-- Dynamic Content Here -->
+                                    </div>
+                                    <div class="absolute bottom-6 right-4 w-14 h-14 md:w-16 md:h-16 rounded-full border-4 border-red-500/80 flex items-center justify-center rotate-[-15deg] bg-red-50/50 backdrop-blur-sm">
+                                        <span class="font-heading font-black text-2xl md:text-3xl text-red-500">A+</span>
+                                    </div>
+                                 </div>
+
+                             </div>
+
+                             <!-- Background decorative elements for depth -->
+                             <div class="absolute z-0 w-52 md:w-64 aspect-[1/1.4] bg-slate-50 border border-slate-200 rounded-lg rotate-[-6deg] scale-95 opacity-60"></div>
                              
                              <!-- Floating Elements -->
-                             <div class="absolute top-10 left-6 md:left-10 bg-white p-3 md:p-4 rounded-2xl shadow-lg animate-float flex items-center gap-3 border border-slate-100">
+                             <div class="absolute top-10 left-6 md:left-10 bg-white p-3 md:p-4 rounded-2xl shadow-lg animate-float flex items-center gap-3 border border-slate-100 z-20">
                                  <div class="bg-green-100 p-2 rounded-lg text-green-600">
                                      <i data-lucide="check-circle" class="w-5 h-5 md:w-6 md:h-6"></i>
                                  </div>
                                  <div>
-                                     <p class="text-[10px] md:text-xs text-slate-500 font-bold uppercase">Physics</p>
+                                     <p id="floating-subject" class="text-[10px] md:text-xs text-slate-500 font-bold uppercase">Physics</p>
                                      <p class="text-sm md:text-base font-bold text-slate-800">A+ Grade</p>
                                  </div>
                              </div>
 
-                             <div class="absolute bottom-20 right-6 md:right-10 bg-white p-3 md:p-4 rounded-2xl shadow-lg animate-float-delayed flex items-center gap-3 border border-slate-100">
+                             <div class="absolute bottom-20 right-6 md:right-10 bg-white p-3 md:p-4 rounded-2xl shadow-lg animate-float-delayed flex items-center gap-3 border border-slate-100 z-20">
                                 <div class="bg-blue-100 p-2 rounded-lg text-blue-600">
                                     <i data-lucide="users" class="w-5 h-5 md:w-6 md:h-6"></i>
                                 </div>
@@ -313,9 +360,6 @@
                                     <p class="text-sm md:text-base font-bold text-slate-800">Join Now</p>
                                 </div>
                             </div>
-
-                             <!-- Main Character Placeholder (Icon) -->
-                             <i data-lucide="monitor-play" class="w-24 h-24 md:w-32 md:h-32 text-brand-500 relative z-10"></i>
                         </div>
                     </div>
                 </div>
@@ -325,6 +369,7 @@
 
     <!-- Features Section -->
     <section id="features" class="py-16 md:py-24 bg-white">
+        <!-- ... existing features content ... -->
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-3xl mx-auto mb-12 md:mb-16 reveal">
                 <h2 class="text-brand-600 font-bold tracking-wide uppercase text-sm mb-2">Why Choose Us</h2>
@@ -365,6 +410,7 @@
 
     <!-- Popular Courses -->
     <section id="courses" class="py-16 md:py-24 bg-slate-50 relative overflow-hidden">
+        <!-- ... existing courses content ... -->
         <!-- Background Decor -->
         <div class="absolute top-0 left-0 w-full h-full overflow-hidden opacity-30 pointer-events-none">
             <div class="absolute top-10 left-10 w-64 h-64 bg-brand-200 rounded-full mix-blend-multiply filter blur-3xl"></div>
@@ -463,6 +509,7 @@
 
     <!-- Call to Action / Newsletter -->
     <section class="py-16 md:py-24">
+        <!-- ... existing newsletter content ... -->
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="bg-brand-600 rounded-[2.5rem] p-8 md:p-12 relative overflow-hidden text-center reveal">
                 <!-- Decorative Circles -->
@@ -484,6 +531,7 @@
 
     <!-- Footer -->
     <footer class="bg-slate-900 text-slate-300 pt-20 pb-24 md:pb-10">
+        <!-- ... existing footer content ... -->
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
                 <!-- Brand -->
@@ -566,17 +614,145 @@
             const icon = document.getElementById('splash-icon');
             const body = document.getElementById('main-body');
 
-            // Trigger Icon Toss Animation after a brief delay
             setTimeout(() => {
                 icon.classList.add('animate-toss');
             }, 600);
 
-            // Slide up splash screen and enable scrolling
             setTimeout(() => {
                 splash.style.transform = 'translateY(-100%)';
                 body.classList.remove('overflow-hidden');
             }, 2800);
+            
+            // Start the paper animation shortly after splash screen
+            setTimeout(() => {
+                startPaperAnimation();
+            }, 3500);
         });
+        
+        // --- PAPER TOSS ANIMATION LOGIC ---
+        const subjects = [
+            {
+                subject: "Physics",
+                content: `
+                    <div>
+                        <p class="font-bold">Q. Force formula?</p>
+                        <p class="text-blue-600 pl-2">F = m × a <span class="text-green-500 font-sans text-lg inline-block">✓</span></p>
+                    </div>
+                    <div>
+                        <p class="font-bold">Q. E = ?</p>
+                        <p class="text-blue-600 pl-2">mc² <span class="text-green-500 font-sans text-lg inline-block">✓</span></p>
+                    </div>
+                    <div>
+                        <p class="font-bold">Q. Gravity?</p>
+                        <p class="text-blue-600 pl-2">9.8 m/s² <span class="text-green-500 font-sans text-lg inline-block">✓</span></p>
+                    </div>
+                `
+            },
+            {
+                subject: "Maths",
+                content: `
+                    <div>
+                        <p class="font-bold">Q. Area of Circle?</p>
+                        <p class="text-blue-600 pl-2">πr² <span class="text-green-500 font-sans text-lg inline-block">✓</span></p>
+                    </div>
+                    <div>
+                        <p class="font-bold">Q. 12 × 12 = ?</p>
+                        <p class="text-blue-600 pl-2">144 <span class="text-green-500 font-sans text-lg inline-block">✓</span></p>
+                    </div>
+                    <div>
+                        <p class="font-bold">Q. Sin(90°)?</p>
+                        <p class="text-blue-600 pl-2">1 <span class="text-green-500 font-sans text-lg inline-block">✓</span></p>
+                    </div>
+                `
+            },
+            {
+                subject: "Chemistry",
+                content: `
+                    <div>
+                        <p class="font-bold">Q. Water formula?</p>
+                        <p class="text-blue-600 pl-2">H₂O <span class="text-green-500 font-sans text-lg inline-block">✓</span></p>
+                    </div>
+                    <div>
+                        <p class="font-bold">Q. Salt?</p>
+                        <p class="text-blue-600 pl-2">NaCl <span class="text-green-500 font-sans text-lg inline-block">✓</span></p>
+                    </div>
+                    <div>
+                        <p class="font-bold">Q. pH of Water?</p>
+                        <p class="text-blue-600 pl-2">7 (Neutral) <span class="text-green-500 font-sans text-lg inline-block">✓</span></p>
+                    </div>
+                `
+            },
+            {
+                subject: "English",
+                content: `
+                    <div>
+                        <p class="font-bold">Q. Verb form?</p>
+                        <p class="text-blue-600 pl-2">Running <span class="text-green-500 font-sans text-lg inline-block">✓</span></p>
+                    </div>
+                    <div>
+                        <p class="font-bold">Q. Antonym of Good?</p>
+                        <p class="text-blue-600 pl-2">Bad <span class="text-green-500 font-sans text-lg inline-block">✓</span></p>
+                    </div>
+                    <div>
+                        <p class="font-bold">Q. Plural of Leaf?</p>
+                        <p class="text-blue-600 pl-2">Leaves <span class="text-green-500 font-sans text-lg inline-block">✓</span></p>
+                    </div>
+                `
+            }
+        ];
+
+        let currentIndex = 0;
+
+        function startPaperAnimation() {
+            const frontPaper = document.getElementById('paper-front');
+            const backPaper = document.getElementById('paper-back');
+            const frontContent = document.getElementById('front-content');
+            const backContent = document.getElementById('back-content');
+            const floatingSubject = document.getElementById('floating-subject');
+
+            // Initialize content
+            frontContent.innerHTML = subjects[0].content;
+            backContent.innerHTML = subjects[1].content;
+            floatingSubject.innerText = subjects[0].subject;
+
+            setInterval(() => {
+                // 1. Animate Front Paper Sliding Out
+                frontPaper.classList.add('animate-paper-slide-out');
+                
+                // 2. Animate Back Paper Scaling Up
+                backPaper.classList.remove('scale-90', 'opacity-60', 'rotate-3');
+                backPaper.classList.add('animate-paper-scale-up'); // Adds final state styles
+                
+                // 3. Update Text Label
+                let nextIndex = (currentIndex + 1) % subjects.length;
+                floatingSubject.innerText = subjects[nextIndex].subject;
+
+                // 4. Wait for animation to finish, then reset/swap
+                setTimeout(() => {
+                    // Update current index
+                    currentIndex = nextIndex;
+                    let nextNextIndex = (currentIndex + 1) % subjects.length;
+
+                    // Swap Content: Back becomes Front (visually)
+                    // We simply put the 'back' content into the 'front' element instantly
+                    // and reset the front element's position.
+                    frontContent.innerHTML = subjects[currentIndex].content;
+                    
+                    // Reset Front Paper classes (remove animation)
+                    frontPaper.classList.remove('animate-paper-slide-out');
+                    
+                    // Reset Back Paper for next round (put next-next content in it)
+                    backContent.innerHTML = subjects[nextNextIndex].content;
+                    
+                    // Reset Back Paper visual state (put it back to bottom)
+                    // We remove the animation class and manually re-add the 'initial' state classes
+                    backPaper.classList.remove('animate-paper-scale-up');
+                    backPaper.classList.add('scale-90', 'opacity-60', 'rotate-3');
+
+                }, 750); // Matches animation duration slightly less to be snappy
+
+            }, 4000); // Repeat every 4 seconds
+        }
 
         // Navbar Blur Effect on Scroll
         const navbar = document.getElementById('navbar');
