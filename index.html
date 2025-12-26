@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>DEMO SITE NAME | Excellence in Education</title>
+    
+    <!-- Mobile App Meta Tags -->
+    <meta name="theme-color" content="#ffffff">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="DemoSite">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        heading: ['"Outfit"', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a',
+                        },
+                        accent: {
+                            500: '#f59e0b', // Amber/Orange
+                            600: '#d97706',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'float-delayed': 'float 6s ease-in-out 3s infinite',
+                        'spin-slow': 'spin 12s linear infinite',
+                        'toss': 'toss 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards',
+                        'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
+                        'loader': 'loader 2.5s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        },
+                        toss: {
+                            '0%': { transform: 'translateY(0) rotate(0deg)' },
+                            '50%': { transform: 'translateY(-80px) rotate(180deg) scale(1.1)' },
+                            '100%': { transform: 'translateY(0) rotate(360deg) scale(1)' },
+                        },
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        loader: {
+                            '0%': { transform: 'translateX(-100%)' },
+                            '50%': { transform: 'translateX(0%)' },
+                            '100%': { transform: 'translateX(100%)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Utilities */
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Scroll Animation Classes */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* App Bottom Nav Safe Area */
+        .pb-safe {
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Hero Background Pattern */
+        .hero-bg {
+            background-color: #f8fafc;
+            background-image: 
+                radial-gradient(at 0% 0%, hsla(217,91%,91%,1) 0, transparent 50%), 
+                radial-gradient(at 50% 0%, hsla(225,95%,90%,1) 0, transparent 50%), 
+                radial-gradient(at 100% 0%, hsla(200,98%,92%,1) 0, transparent 50%);
+        }
+    </style>
+</head>
+<body class="font-sans text-slate-800 antialiased overflow-x-hidden bg-slate-50 overflow-hidden pb-20 md:pb-0" id="main-body">
+
+    <!-- Splash Screen -->
+    <div id="splash-screen" class="fixed inset-0 z-[100] bg-slate-900 flex flex-col items-center justify-center transition-transform duration-1000 cubic-bezier(0.7, 0, 0.2, 1)">
+        <div class="relative mb-8">
+            <div class="absolute inset-0 bg-brand-500 rounded-2xl blur-xl opacity-20 animate-pulse"></div>
+            <div id="splash-icon" class="relative w-24 h-24 bg-gradient-to-br from-brand-500 to-brand-700 rounded-2xl flex items-center justify-center text-white shadow-2xl z-10 scale-0 animate-[fadeInUp_0.5s_ease-out_forwards]">
+                <i data-lucide="graduation-cap" class="w-12 h-12"></i>
+            </div>
+            <!-- Floating particles -->
+            <div class="absolute -top-6 -right-6 animate-float">
+                <i data-lucide="book-open" class="w-8 h-8 text-accent-500 opacity-0 animate-[fadeInUp_0.5s_ease-out_0.3s_forwards]"></i>
+            </div>
+            <div class="absolute -bottom-4 -left-6 animate-float-delayed">
+                <i data-lucide="lightbulb" class="w-6 h-6 text-emerald-400 opacity-0 animate-[fadeInUp_0.5s_ease-out_0.5s_forwards]"></i>
+            </div>
+        </div>
+        
+        <h1 class="font-heading text-4xl md:text-5xl font-bold text-white tracking-tight mb-2 opacity-0 animate-[fadeInUp_0.8s_ease-out_0.4s_forwards]">
+            DEMO<span class="text-brand-500">SITE</span>
+        </h1>
+        
+        <!-- Loading Bar -->
+        <div class="w-48 h-1 bg-slate-800 rounded-full mt-6 overflow-hidden relative opacity-0 animate-[fadeInUp_0.8s_ease-out_0.6s_forwards]">
+            <div class="absolute inset-y-0 left-0 bg-brand-500 w-full animate-loader"></div>
+        </div>
+    </div>
+
+    <!-- Navigation (Top - Desktop Only for Links, Logo for All) -->
+    <nav class="fixed w-full z-50 glass-nav transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-center md:justify-between items-center h-16 md:h-20">
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center gap-2 cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <div class="w-8 h-8 md:w-10 md:h-10 bg-brand-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-brand-500/30">
+                        <i data-lucide="graduation-cap" class="w-5 h-5"></i>
+                    </div>
+                    <span class="font-heading font-bold text-xl md:text-2xl tracking-tight text-slate-900">DEMO<span class="text-brand-600">SITE</span></span>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="#home" class="text-slate-600 hover:text-brand-600 font-medium transition-colors">Home</a>
+                    <a href="#features" class="text-slate-600 hover:text-brand-600 font-medium transition-colors">Why Us</a>
+                    <a href="#courses" class="text-slate-600 hover:text-brand-600 font-medium transition-colors">Courses</a>
+                    <a href="#testimonials" class="text-slate-600 hover:text-brand-600 font-medium transition-colors">Stories</a>
+                    <button class="bg-brand-600 hover:bg-brand-700 text-white px-6 py-2.5 rounded-full font-semibold transition-all shadow-lg shadow-brand-500/30 hover:shadow-brand-500/50 transform hover:-translate-y-0.5">
+                        Join Now
+                    </button>
+                </div>
+                
+                <!-- Mobile Notification/Action (Replaces Hamburger) -->
+                <div class="md:hidden absolute right-4">
+                    <button class="p-2 text-slate-600 hover:text-brand-600 relative">
+                        <i data-lucide="bell" class="w-6 h-6"></i>
+                        <span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Mobile Bottom Navigation (App Style) -->
+    <div class="md:hidden fixed bottom-0 left-0 w-full bg-white/95 backdrop-blur-xl border-t border-slate-200 z-50 pb-safe shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+        <div class="flex justify-around items-center h-16">
+            <a href="#home" class="nav-item flex flex-col items-center justify-center w-full h-full text-brand-600 active-nav">
+                <i data-lucide="home" class="w-6 h-6 mb-0.5"></i>
+                <span class="text-[10px] font-medium">Home</span>
+            </a>
+            <a href="#features" class="nav-item flex flex-col items-center justify-center w-full h-full text-slate-400 hover:text-brand-600 transition-colors">
+                <i data-lucide="compass" class="w-6 h-6 mb-0.5"></i>
+                <span class="text-[10px] font-medium">Explore</span>
+            </a>
+            <!-- Floating FAB (Floating Action Button) effect for center item -->
+            <div class="relative -top-6">
+                <button class="w-14 h-14 bg-brand-600 rounded-full text-white shadow-lg shadow-brand-500/40 flex items-center justify-center transform active:scale-95 transition-transform" onclick="document.querySelector('#courses').scrollIntoView({behavior: 'smooth'})">
+                    <i data-lucide="play" class="w-6 h-6 ml-1"></i>
+                </button>
+            </div>
+            <a href="#courses" class="nav-item flex flex-col items-center justify-center w-full h-full text-slate-400 hover:text-brand-600 transition-colors">
+                <i data-lucide="book-open" class="w-6 h-6 mb-0.5"></i>
+                <span class="text-[10px] font-medium">Learn</span>
+            </a>
+            <a href="#" class="nav-item flex flex-col items-center justify-center w-full h-full text-slate-400 hover:text-brand-600 transition-colors">
+                <i data-lucide="user" class="w-6 h-6 mb-0.5"></i>
+                <span class="text-[10px] font-medium">Profile</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative pt-24 pb-12 lg:pt-48 lg:pb-32 overflow-hidden hero-bg">
+        <!-- Floating shapes -->
+        <div class="absolute top-20 right-0 -mr-20 w-96 h-96 bg-brand-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float"></div>
+        <div class="absolute bottom-0 left-0 -ml-20 w-96 h-96 bg-accent-400 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float-delayed"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+            <div class="grid lg:grid-cols-2 gap-12 items-center">
+                <div class="text-center lg:text-left reveal active">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-100 text-brand-700 font-semibold text-sm mb-6 animate-pulse">
+                        <span class="relative flex h-2 w-2">
+                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
+                          <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-500"></span>
+                        </span>
+                        Admissions Open for 2024
+                    </div>
+                    <h1 class="font-heading text-4xl md:text-5xl lg:text-7xl font-bold text-slate-900 leading-tight mb-6">
+                        Unlock Your <br>
+                        <span class="text-gradient">True Potential.</span>
+                    </h1>
+                    <p class="text-base md:text-lg text-slate-600 mb-8 leading-relaxed max-w-2xl mx-auto lg:mx-0">
+                        Join the most innovative coaching platform. Expert mentors, personalized learning paths, and a community dedicated to your success.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start px-4 sm:px-0">
+                        <button class="w-full sm:w-auto px-8 py-4 bg-brand-600 hover:bg-brand-700 text-white rounded-xl font-bold shadow-lg shadow-brand-500/40 transition-all active:scale-95 flex items-center justify-center gap-2">
+                            Get Started
+                            <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                        </button>
+                        <button class="w-full sm:w-auto px-8 py-4 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 rounded-xl font-bold shadow-sm transition-all active:scale-95 flex items-center justify-center gap-2">
+                            <i data-lucide="play-circle" class="w-5 h-5 text-brand-600"></i>
+                            Watch Demo
+                        </button>
+                    </div>
+                    
+                    <!-- Stats -->
+                    <div class="mt-12 grid grid-cols-3 gap-4 md:gap-8 border-t border-slate-200 pt-8">
+                        <div>
+                            <p class="text-2xl md:text-3xl font-bold text-slate-900">5k+</p>
+                            <p class="text-xs md:text-sm text-slate-500 font-medium">Students</p>
+                        </div>
+                        <div>
+                            <p class="text-2xl md:text-3xl font-bold text-slate-900">98%</p>
+                            <p class="text-xs md:text-sm text-slate-500 font-medium">Success Rate</p>
+                        </div>
+                        <div>
+                            <p class="text-2xl md:text-3xl font-bold text-slate-900">50+</p>
+                            <p class="text-xs md:text-sm text-slate-500 font-medium">Courses</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative h-[400px] lg:h-[600px] flex items-center justify-center reveal delay-200 mt-8 lg:mt-0">
+                    <!-- Abstract Hero Visual using CSS/SVG instead of Image -->
+                    <div class="relative w-full max-w-lg aspect-square scale-90 md:scale-100">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-brand-100 to-white rounded-[3rem] rotate-3 transform shadow-2xl border border-white/50"></div>
+                        <div class="absolute inset-0 bg-white rounded-[3rem] -rotate-3 transform shadow-xl overflow-hidden flex items-center justify-center border border-slate-100">
+                             <!-- Simple SVG illustration -->
+                             <svg class="w-full h-full text-slate-100" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="200" cy="200" r="150" fill="currentColor" opacity="0.5"/>
+                                <path d="M100 200 Q200 50 300 200 T100 200" fill="none" stroke="#e2e8f0" stroke-width="2"/>
+                             </svg>
+                             
+                             <!-- Floating Elements -->
+                             <div class="absolute top-10 left-6 md:left-10 bg-white p-3 md:p-4 rounded-2xl shadow-lg animate-float flex items-center gap-3 border border-slate-100">
+                                 <div class="bg-green-100 p-2 rounded-lg text-green-600">
+                                     <i data-lucide="check-circle" class="w-5 h-5 md:w-6 md:h-6"></i>
+                                 </div>
+                                 <div>
+                                     <p class="text-[10px] md:text-xs text-slate-500 font-bold uppercase">Physics</p>
+                                     <p class="text-sm md:text-base font-bold text-slate-800">A+ Grade</p>
+                                 </div>
+                             </div>
+
+                             <div class="absolute bottom-20 right-6 md:right-10 bg-white p-3 md:p-4 rounded-2xl shadow-lg animate-float-delayed flex items-center gap-3 border border-slate-100">
+                                <div class="bg-blue-100 p-2 rounded-lg text-blue-600">
+                                    <i data-lucide="users" class="w-5 h-5 md:w-6 md:h-6"></i>
+                                </div>
+                                <div>
+                                    <p class="text-[10px] md:text-xs text-slate-500 font-bold uppercase">Live Class</p>
+                                    <p class="text-sm md:text-base font-bold text-slate-800">Join Now</p>
+                                </div>
+                            </div>
+
+                             <!-- Main Character Placeholder (Icon) -->
+                             <i data-lucide="monitor-play" class="w-24 h-24 md:w-32 md:h-32 text-brand-500 relative z-10"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="py-16 md:py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12 md:mb-16 reveal">
+                <h2 class="text-brand-600 font-bold tracking-wide uppercase text-sm mb-2">Why Choose Us</h2>
+                <h3 class="font-heading text-3xl md:text-4xl font-bold text-slate-900 mb-4">Reinventing the Way You Learn</h3>
+                <p class="text-slate-600 text-lg">We combine technology with traditional teaching methods to provide the best learning environment.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6 md:gap-8">
+                <!-- Card 1 -->
+                <div class="group p-6 md:p-8 rounded-3xl bg-slate-50 hover:bg-white border border-slate-100 hover:border-brand-200 hover:shadow-2xl hover:shadow-brand-900/10 transition-all duration-300 reveal delay-100">
+                    <div class="w-12 h-12 md:w-14 md:h-14 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <i data-lucide="presentation" class="w-6 h-6 md:w-7 md:h-7"></i>
+                    </div>
+                    <h4 class="text-lg md:text-xl font-bold text-slate-900 mb-3">Interactive Classes</h4>
+                    <p class="text-slate-600 leading-relaxed text-sm md:text-base">Engage with expert teachers in real-time. Raise hands, ask questions, and solve doubts instantly.</p>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="group p-6 md:p-8 rounded-3xl bg-slate-50 hover:bg-white border border-slate-100 hover:border-brand-200 hover:shadow-2xl hover:shadow-brand-900/10 transition-all duration-300 reveal delay-200">
+                    <div class="w-12 h-12 md:w-14 md:h-14 bg-amber-100 text-amber-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <i data-lucide="target" class="w-6 h-6 md:w-7 md:h-7"></i>
+                    </div>
+                    <h4 class="text-lg md:text-xl font-bold text-slate-900 mb-3">Personalized Plans</h4>
+                    <p class="text-slate-600 leading-relaxed text-sm md:text-base">AI-driven learning paths that adapt to your pace. Focus on your weak areas and master them.</p>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="group p-6 md:p-8 rounded-3xl bg-slate-50 hover:bg-white border border-slate-100 hover:border-brand-200 hover:shadow-2xl hover:shadow-brand-900/10 transition-all duration-300 reveal delay-300">
+                    <div class="w-12 h-12 md:w-14 md:h-14 bg-teal-100 text-teal-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
+                        <i data-lucide="award" class="w-6 h-6 md:w-7 md:h-7"></i>
+                    </div>
+                    <h4 class="text-lg md:text-xl font-bold text-slate-900 mb-3">Certified Growth</h4>
+                    <p class="text-slate-600 leading-relaxed text-sm md:text-base">Earn certificates and track your progress with detailed analytics and performance reports.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Popular Courses -->
+    <section id="courses" class="py-16 md:py-24 bg-slate-50 relative overflow-hidden">
+        <!-- Background Decor -->
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden opacity-30 pointer-events-none">
+            <div class="absolute top-10 left-10 w-64 h-64 bg-brand-200 rounded-full mix-blend-multiply filter blur-3xl"></div>
+            <div class="absolute bottom-10 right-10 w-64 h-64 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-8 md:mb-12 gap-4 reveal">
+                <div>
+                    <h2 class="text-brand-600 font-bold tracking-wide uppercase text-sm mb-2">Our Courses</h2>
+                    <h3 class="font-heading text-3xl md:text-4xl font-bold text-slate-900">Explore Top Categories</h3>
+                </div>
+                <button class="text-brand-600 font-semibold hover:text-brand-700 flex items-center gap-2 group">
+                    View All Courses <i data-lucide="arrow-right" class="w-4 h-4 transform group-hover:translate-x-1 transition-transform"></i>
+                </button>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                <!-- Course Card 1 -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 group reveal delay-100">
+                    <div class="h-40 md:h-48 bg-gradient-to-br from-blue-400 to-indigo-500 relative flex items-center justify-center">
+                        <i data-lucide="calculator" class="text-white w-12 h-12 md:w-16 md:h-16 opacity-80 group-hover:scale-110 transition-transform duration-500"></i>
+                        <span class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-indigo-600">Mathematics</span>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center gap-2 text-sm text-slate-500 mb-3">
+                            <i data-lucide="book-open" class="w-4 h-4"></i> 12 Lessons
+                            <span class="mx-1">•</span>
+                            <i data-lucide="clock" class="w-4 h-4"></i> 24h Total
+                        </div>
+                        <h4 class="text-lg md:text-xl font-bold text-slate-900 mb-2 group-hover:text-brand-600 transition-colors">Advanced Algebra & Calculus</h4>
+                        <p class="text-slate-600 text-sm mb-6 line-clamp-2">Master the fundamentals of Algebra and take a deep dive into Calculus limits.</p>
+                        
+                        <div class="flex items-center justify-between pt-4 border-t border-slate-100">
+                            <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-xs font-bold text-slate-600">JD</div>
+                                <span class="text-sm font-medium text-slate-700">John Doe</span>
+                            </div>
+                            <span class="text-lg font-bold text-brand-600">$49</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Course Card 2 -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 group reveal delay-200">
+                    <div class="h-40 md:h-48 bg-gradient-to-br from-emerald-400 to-teal-500 relative flex items-center justify-center">
+                        <i data-lucide="flask-conical" class="text-white w-12 h-12 md:w-16 md:h-16 opacity-80 group-hover:scale-110 transition-transform duration-500"></i>
+                        <span class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-teal-600">Science</span>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center gap-2 text-sm text-slate-500 mb-3">
+                            <i data-lucide="book-open" class="w-4 h-4"></i> 20 Lessons
+                            <span class="mx-1">•</span>
+                            <i data-lucide="clock" class="w-4 h-4"></i> 32h Total
+                        </div>
+                        <h4 class="text-lg md:text-xl font-bold text-slate-900 mb-2 group-hover:text-brand-600 transition-colors">Complete Physics Guide</h4>
+                        <p class="text-slate-600 text-sm mb-6 line-clamp-2">Understanding laws of motion, thermodynamics, and quantum mechanics basics.</p>
+                        
+                        <div class="flex items-center justify-between pt-4 border-t border-slate-100">
+                            <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-xs font-bold text-slate-600">AS</div>
+                                <span class="text-sm font-medium text-slate-700">Dr. Smith</span>
+                            </div>
+                            <span class="text-lg font-bold text-brand-600">$59</span>
+                        </div>
+                    </div>
+                </div>
+
+                 <!-- Course Card 3 -->
+                 <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 group reveal delay-300">
+                    <div class="h-40 md:h-48 bg-gradient-to-br from-orange-400 to-red-500 relative flex items-center justify-center">
+                        <i data-lucide="languages" class="text-white w-12 h-12 md:w-16 md:h-16 opacity-80 group-hover:scale-110 transition-transform duration-500"></i>
+                        <span class="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-bold text-orange-600">English</span>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center gap-2 text-sm text-slate-500 mb-3">
+                            <i data-lucide="book-open" class="w-4 h-4"></i> 15 Lessons
+                            <span class="mx-1">•</span>
+                            <i data-lucide="clock" class="w-4 h-4"></i> 18h Total
+                        </div>
+                        <h4 class="text-lg md:text-xl font-bold text-slate-900 mb-2 group-hover:text-brand-600 transition-colors">Business English Mastery</h4>
+                        <p class="text-slate-600 text-sm mb-6 line-clamp-2">Enhance your communication skills for the professional environment.</p>
+                        
+                        <div class="flex items-center justify-between pt-4 border-t border-slate-100">
+                            <div class="flex items-center gap-2">
+                                <div class="w-8 h-8 rounded-full bg-slate-200 flex items-center justify-center text-xs font-bold text-slate-600">EM</div>
+                                <span class="text-sm font-medium text-slate-700">Emma M.</span>
+                            </div>
+                            <span class="text-lg font-bold text-brand-600">$39</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action / Newsletter -->
+    <section class="py-16 md:py-24">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-brand-600 rounded-[2.5rem] p-8 md:p-12 relative overflow-hidden text-center reveal">
+                <!-- Decorative Circles -->
+                <div class="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-white opacity-10 rounded-full"></div>
+                <div class="absolute bottom-0 left-0 -ml-16 -mb-16 w-64 h-64 bg-white opacity-10 rounded-full"></div>
+
+                <div class="relative z-10">
+                    <h2 class="font-heading text-3xl md:text-5xl font-bold text-white mb-6">Ready to start your journey?</h2>
+                    <p class="text-brand-100 text-lg mb-8 max-w-2xl mx-auto">Get exclusive offers, free study material, and course updates directly to your inbox.</p>
+                    
+                    <form class="flex flex-col sm:flex-row gap-4 justify-center max-w-lg mx-auto" onsubmit="event.preventDefault(); alert('Thank you for subscribing!');">
+                        <input type="email" placeholder="Enter your email" class="px-6 py-4 rounded-xl bg-white/10 border border-white/20 text-white placeholder-brand-200 focus:outline-none focus:bg-white/20 flex-grow backdrop-blur-sm" required>
+                        <button class="w-full sm:w-auto px-8 py-4 bg-white text-brand-600 font-bold rounded-xl hover:bg-brand-50 transition-colors shadow-lg">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-300 pt-20 pb-24 md:pb-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+                <!-- Brand -->
+                <div class="col-span-1 lg:col-span-1">
+                    <div class="flex items-center gap-2 mb-6">
+                        <div class="w-8 h-8 bg-brand-600 rounded-lg flex items-center justify-center text-white">
+                            <i data-lucide="graduation-cap" class="w-5 h-5"></i>
+                        </div>
+                        <span class="font-heading font-bold text-xl text-white">DEMO<span class="text-brand-500">SITE</span></span>
+                    </div>
+                    <p class="text-slate-400 text-sm leading-relaxed mb-6">
+                        Empowering students with knowledge, skills, and the confidence to succeed in a rapidly changing world.
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-brand-600 transition-colors text-white"><i data-lucide="facebook" class="w-5 h-5"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-brand-600 transition-colors text-white"><i data-lucide="twitter" class="w-5 h-5"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-brand-600 transition-colors text-white"><i data-lucide="instagram" class="w-5 h-5"></i></a>
+                    </div>
+                </div>
+
+                <!-- Links -->
+                <div>
+                    <h4 class="font-bold text-white mb-6">Quick Links</h4>
+                    <ul class="space-y-4 text-sm">
+                        <li><a href="#" class="hover:text-brand-500 transition-colors">About Us</a></li>
+                        <li><a href="#" class="hover:text-brand-500 transition-colors">Our Courses</a></li>
+                        <li><a href="#" class="hover:text-brand-500 transition-colors">Instructors</a></li>
+                        <li><a href="#" class="hover:text-brand-500 transition-colors">Success Stories</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div>
+                    <h4 class="font-bold text-white mb-6">Contact Us</h4>
+                    <ul class="space-y-4 text-sm">
+                        <li class="flex items-start gap-3">
+                            <i data-lucide="map-pin" class="w-5 h-5 text-brand-500 shrink-0"></i>
+                            <span>123 Education Street, Knowledge City, State 45678</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i data-lucide="phone" class="w-5 h-5 text-brand-500 shrink-0"></i>
+                            <span>+1 (234) 567-8900</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i data-lucide="mail" class="w-5 h-5 text-brand-500 shrink-0"></i>
+                            <span>hello@demosite.com</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Newsletter (Mini) -->
+                <div>
+                    <h4 class="font-bold text-white mb-6">Support</h4>
+                    <ul class="space-y-4 text-sm">
+                        <li><a href="#" class="hover:text-brand-500 transition-colors">Help Center</a></li>
+                        <li><a href="#" class="hover:text-brand-500 transition-colors">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-brand-500 transition-colors">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-sm text-slate-500">© 2024 DEMO SITE NAME. All rights reserved.</p>
+                <div class="text-sm text-slate-500 flex gap-6">
+                    <a href="#" class="hover:text-white">Privacy</a>
+                    <a href="#" class="hover:text-white">Terms</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Splash Screen Logic
+        window.addEventListener('load', () => {
+            const splash = document.getElementById('splash-screen');
+            const icon = document.getElementById('splash-icon');
+            const body = document.getElementById('main-body');
+
+            // Trigger Icon Toss Animation after a brief delay
+            setTimeout(() => {
+                icon.classList.add('animate-toss');
+            }, 600);
+
+            // Slide up splash screen and enable scrolling
+            setTimeout(() => {
+                splash.style.transform = 'translateY(-100%)';
+                body.classList.remove('overflow-hidden');
+            }, 2800);
+        });
+
+        // Navbar Blur Effect on Scroll
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                navbar.classList.add('shadow-lg');
+                navbar.classList.replace('bg-opacity-85', 'bg-opacity-95');
+            } else {
+                navbar.classList.remove('shadow-lg');
+                navbar.classList.replace('bg-opacity-95', 'bg-opacity-85');
+            }
+        });
+
+        // Scroll Animation Observer
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target); // Only animate once
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => {
+            observer.observe(el);
+        });
+        
+        // Mobile Bottom Nav Active State Logic
+        const sections = document.querySelectorAll('section');
+        const navItems = document.querySelectorAll('.nav-item');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= (sectionTop - 300)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navItems.forEach(item => {
+                item.classList.remove('text-brand-600');
+                item.classList.add('text-slate-400');
+                if (item.getAttribute('href').includes(current)) {
+                    item.classList.remove('text-slate-400');
+                    item.classList.add('text-brand-600');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
